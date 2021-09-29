@@ -35,9 +35,31 @@ namespace Naima.MostriVsEroi.Mock
             return true;
         }
 
+        public Monster GetById(int monsterId)
+        {
+            return monsters.FirstOrDefault(m => m.Id == monsterId);
+        }
+
+        public int GetLife(int monsterId)
+        {
+            var monster = monsters.Find(m => m.Id == monsterId);
+            return monster.LifePoints;
+        }
+
         public List<Monster> GetMonstersByHeroLevel(int level)
         {
             return monsters.Where(m => m.Level <= level).ToList();
+        }
+
+        public Monster UpdateLifePoints(int lifePoints, int id)
+        {
+            var monster = GetById(id);
+            monsters.Remove(monster);
+
+            monster.LifePoints = lifePoints;
+            monsters.Add(monster);
+
+            return monster;
         }
     }
 }

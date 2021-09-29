@@ -26,5 +26,13 @@ namespace Naima.MostriVsEroi.Core.BL
         int GetHeroByName(string name);
         int GetHeroLevel(int heroId);
         List<Monster> GetMonstersByHeroLevel(int level);
+        int GetHeroLifePoints(int heroId);
+        int GetMonsterLifePoints(int monsterId);
+        Hero GetHeroById(int heroId);
+        Monster getMonsterById(int monsterId);
+        Monster UpdateMonsterLifePoints(int lifePoints, int id);
+        Hero UpdateHeroLifePoints(int lifePoints, int id);
+        void UpdateHero(Hero hero);
+        User GetUserById(int id);
     }
 }

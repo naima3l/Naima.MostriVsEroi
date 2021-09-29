@@ -78,7 +78,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
         {
             bool check = true;
             int choice;
-            int heroId, monsterId;
+            int heroId;
 
             do
             {
@@ -109,32 +109,152 @@ namespace Naima.MostriVsEroi.ConsoleApp
             } while (check);
         }
 
-        private static void Play(int id, int heroId)
+        public static void Play(int id, int heroId)
         {
-            int level = bl.GetHeroLevel(heroId);
-            List<Monster> monsters = bl.GetMonstersByHeroLevel(level);
+            Hero hero = bl.GetHeroById(heroId);
+
+            List<Monster> monsters = bl.GetMonstersByHeroLevel(hero.Level);
             Random random = new Random();
             int monsterId = random.Next(monsters.Count + 1);
 
-            int choice;
+            Monster monster = bl.getMonsterById(monsterId);
+
             Console.WriteLine("Iniziamo!");
-            Console.WriteLine("Tocca a te eroe");
-            Console.WriteLine("Premi 1 per attaccare il mostro \nPremi 2 per fuggire");
-            while(!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 2)
-            {
-                Console.WriteLine("Scelta non valida. Riprova");
-            }
-            switch(choice)
-            {
-                case 1:
-                    Attack(heroId, monsterId);
-                    break;
-                case 2:
-                    RunAway();
-                    break;
-            }
+            HeroChoice(id,hero, monster);
 
             
+            
+        }
+
+        private static void HeroChoice(int id,Hero hero, Monster monster)
+        {
+            User user = bl.GetUserById(id);
+            int choice;
+            do
+            {
+                Console.WriteLine("Tocca a te eroe");
+                Console.WriteLine("Premi 1 per attaccare il mostro \nPremi 2 per fuggire");
+                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 2)
+                {
+                    Console.WriteLine("Scelta non valida. Riprova");
+                }
+                switch (choice)
+                {
+                    case 1:
+                        HeroAttack(id, hero, monster);
+                        break;
+                    case 2:
+                        int c = RunAway(id, hero, monster);
+                        if( c > 0)
+                        {
+                            break;
+                        }
+                        break;
+                }
+            } while (hero.LifePoints > 0 || monster.LifePoints > 0);
+
+            if(hero.LifePoints > 0)
+            {
+                hero.AccumulatedPoints += (monster.Level * 10);
+                Console.WriteLine("Hai vinto!");
+                if(hero.AccumulatedPoints >= 30 && hero.AccumulatedPoints <= 59)
+                {
+                    hero.AccumulatedPoints = 0;
+                    hero.Level = 2;
+                }
+                else if(hero.AccumulatedPoints >= 60 && hero.AccumulatedPoints <= 89)
+                {
+                    hero.AccumulatedPoints = 0;
+                    hero.Level = 3;
+                }
+                else if(hero.AccumulatedPoints >= 90 && hero.AccumulatedPoints <= 119)
+                {
+                    hero.AccumulatedPoints = 0;
+                    hero.Level = 4;
+                }
+                else if(hero.AccumulatedPoints >=120)
+                {
+                    hero.AccumulatedPoints = 0;
+                    hero.Level = 5;
+                }
+
+                bl.UpdateHero(hero);
+            }
+            else
+            {
+                Console.WriteLine("Mi dispiace. Il mostro ha vinto! Sarà per la prossima");
+            }
+
+
+
+
+            //giocare di nuovo
+            Console.WriteLine("Vuoi giocare ancora? \nPremi 1 per giocare con un nuovo eroe \nPremi 2 per giocare con lo stesso eroe \nPremi 0 per non giocare più");
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 2)
+            {
+                Console.WriteLine("Scelta non valida! Riprova");
+            }
+
+            switch (choice)
+            {
+                case 1:
+                    hero.Id = ChooseHero(id);
+                    hero = bl.GetHeroById((int)hero.Id);
+
+                    List<Monster> monsters = bl.GetMonstersByHeroLevel(hero.Level);
+                    Random random = new Random();
+                    int monsterId = random.Next(monsters.Count + 1);
+                    monster = bl.getMonsterById(monsterId);
+
+                    HeroChoice(id, hero, monster);
+                    break;
+                case 2:
+                    List<Monster> monsters1 = bl.GetMonstersByHeroLevel(hero.Level);
+                    Random random1 = new Random();
+                    monsterId = random1.Next(monsters1.Count + 1);
+                    monster = bl.getMonsterById(monsterId);
+
+                    HeroChoice(id, hero, monster);
+                    break;
+                case 0:
+                    break;
+            }
+        }
+       
+        private static int RunAway(int id,Hero hero, Monster monster)
+        {
+            Random random = new Random();
+            bool choice = Convert.ToBoolean(random.Next(2));
+
+            if (choice == false)
+            {
+                MonsterAttack(id, hero, monster);
+                return 0;
+            }
+            else
+            {
+                hero.LifePoints -= (monster.Level * 5);
+                bl.UpdateHero(hero);
+                return hero.LifePoints;
+            }
+        }
+
+        private static void HeroAttack(int id, Hero hero, Monster monster)
+        {
+            int lifePoints = monster.LifePoints - hero.Weapon.DamagePoints;
+            monster = bl.UpdateMonsterLifePoints(lifePoints, (int)monster.Id);
+
+            MonsterAttack(id, hero, monster);
+        }
+
+
+        private static void MonsterAttack(int id, Hero hero, Monster monster)
+        {
+            int lifePoints = hero.LifePoints - monster.Weapon.DamagePoints;
+            hero = bl.UpdateHeroLifePoints(lifePoints, (int)hero.Id);
+
+
+            HeroChoice(id, hero, monster);
         }
 
         private static void DeleteHero()
@@ -257,6 +377,9 @@ namespace Naima.MostriVsEroi.ConsoleApp
             }
 
             User user = bl.GetUserByNickname(nickname);
+
+            //TO DO
+            //Quando un utente possiede almeno un eroe di livello 3, diventa admin.
 
             var checkAdmin = bl.CheckDiscriminator(nickname);
             if(checkAdmin == false) //non admin

@@ -11,5 +11,8 @@ namespace Naima.MostriVsEroi.Core.Repositories
     {
         bool AddNewMonster(string name, Category category, Weapon weapon);
         List<Monster> GetMonstersByHeroLevel(int level);
+        int GetLife(int monsterId);
+        Monster GetById(int monsterId);
+        Monster UpdateLifePoints(int lifePoints, int id);
     }
 }

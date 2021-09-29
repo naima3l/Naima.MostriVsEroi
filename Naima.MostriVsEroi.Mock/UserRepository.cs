@@ -38,6 +38,11 @@ namespace Naima.MostriVsEroi.Mock
             return true; //admin
         }
 
+        public User GetById(int id)
+        {
+            return users.Find(u => u.Id == id);
+        }
+
         public User GetUserByNickname(string nickname)
         {
             return users.FirstOrDefault(u => u.NickName == nickname);

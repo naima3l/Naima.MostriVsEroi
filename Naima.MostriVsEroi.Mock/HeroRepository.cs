@@ -21,6 +21,7 @@ namespace Naima.MostriVsEroi.Mock
 
         public Hero AddNewHero(string name, Category category, Weapon weapon, int id)
         {
+            
             Hero hero = new Hero();
             hero.Name = name;
             hero.Level = 1;
@@ -90,6 +91,39 @@ namespace Naima.MostriVsEroi.Mock
         {
             var hero = heroes.Find(h => h.Id == heroId);
             return hero.Level;
+        }
+
+        public int GetLife(int heroId)
+        {
+            var hero = heroes.Find(h => h.Id == heroId);
+            return hero.LifePoints;
+        }
+
+        public Hero GetById(int heroId)
+        {
+            return heroes.FirstOrDefault(h => h.Id == heroId);
+        }
+
+        public Hero UpdateLifePoints(int lifePoints, int id)
+        {
+            var hero = GetById(id);
+
+            heroes.Remove(hero);
+
+            hero.LifePoints = lifePoints;
+            heroes.Add(hero);
+
+            return hero;
+
+        }
+
+        public void UpdateHero(Hero hero)
+        {
+            var h = GetById((int)hero.Id);
+
+            heroes.Remove(h);
+
+            heroes.Add(hero);
         }
     }
 }

@@ -50,6 +50,11 @@ namespace Naima.MostriVsEroi.Core.BL
             return categoryRepo.GetById(idCategory);
         }
 
+        public Hero GetHeroById(int heroId)
+        {
+            return heroRepo.GetById(heroId);
+        }
+
         public int GetHeroByName(string name)
         {
             return heroRepo.GetIdByName(name);
@@ -60,9 +65,29 @@ namespace Naima.MostriVsEroi.Core.BL
             return heroRepo.GetLevel(heroId);
         }
 
+        public int GetHeroLifePoints(int heroId)
+        {
+            return heroRepo.GetLife(heroId);
+        }
+
+        public Monster getMonsterById(int monsterId)
+        {
+            return monsterRepo.GetById(monsterId);
+        }
+
+        public int GetMonsterLifePoints(int monsterId)
+        {
+            return monsterRepo.GetLife(monsterId);
+        }
+
         public List<Monster> GetMonstersByHeroLevel(int level)
         {
             return monsterRepo.GetMonstersByHeroLevel(level);
+        }
+
+        public User GetUserById(int id)
+        {
+            return userRepo.GetById(id);
         }
 
         public User GetUserByNickname(string nickname)
@@ -125,9 +150,24 @@ namespace Naima.MostriVsEroi.Core.BL
             return weaponRepo.ShowWeaponsByCategory(idCategory);
         }
 
+        public void UpdateHero(Hero hero)
+        {
+            heroRepo.UpdateHero(hero);
+        }
+
         public void UpdateHeroIdUser(int idHero, int id)
         {
             heroRepo.UpdateUserId(idHero, id);
+        }
+
+        public Hero UpdateHeroLifePoints(int lifePoints, int id)
+        {
+            return heroRepo.UpdateLifePoints(lifePoints, id);
+        }
+
+        public Monster UpdateMonsterLifePoints(int lifePoints, int id)
+        {
+            return monsterRepo.UpdateLifePoints(lifePoints, id);
         }
     }
 }

@@ -16,5 +16,9 @@ namespace Naima.MostriVsEroi.Core.Repositories
         List<Hero> ShowBest10Heroes();
         int GetIdByName(string name);
         int GetLevel(int heroId);
+        int GetLife(int heroId);
+        Hero GetById(int heroId);
+        Hero UpdateLifePoints(int lifePoints, int id);
+        void UpdateHero(Hero hero);
     }
 }

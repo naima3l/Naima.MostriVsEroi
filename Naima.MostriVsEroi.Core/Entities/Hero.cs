@@ -20,8 +20,5 @@ namespace Naima.MostriVsEroi.Core.Entities
             IdPlayer = idPlayer;
         }
 
-        public Hero()
-        {
-        }
     }
 }
