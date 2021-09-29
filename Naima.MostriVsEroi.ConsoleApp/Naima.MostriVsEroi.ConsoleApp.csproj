@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Naima.MostriVsEroi.Core\Naima.MostriVsEroi.Core.csproj" />
+    <ProjectReference Include="..\Naima.MostriVsEroi.Mock\Naima.MostriVsEroi.Mock.csproj" />
+  </ItemGroup>
+
+</Project>
