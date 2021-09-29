@@ -17,7 +17,8 @@ namespace Naima.MostriVsEroi.Mock
             new User(3,"bultboss","123456", 1) //admin
         };
 
-
+        // Arianna -> in questo caso un utente con nickname già esistente e psw diversa potrebbe registrarsi
+        // invece verifica solo che il nickname non esista
         public bool CheckCredentials(string nickname, string password)
         {
             var user = users.FirstOrDefault(u => u.NickName == nickname && u.Password == password);

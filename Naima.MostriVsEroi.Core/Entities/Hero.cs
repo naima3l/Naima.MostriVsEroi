@@ -11,7 +11,7 @@ namespace Naima.MostriVsEroi.Core.Entities
         public int AccumulatedPoints { get; set; }
         public int? IdPlayer { get; set; }
 
-        //public Hero() { }
+        public Hero() { } // Arianna -> costruttore vuoto anche nella classe padre
 
         public Hero(int? id, string name, int level, int lifePoints, Category category, Weapon weapon, int points, int? idPlayer) 
             :base(id, name, level, lifePoints, category, weapon)

@@ -15,6 +15,7 @@ namespace Naima.MostriVsEroi.Core.Entities
         public Category Category { get; set; }
         public Weapon Weapon { get; set; }
 
+
         public Character(int? id, string name, int level, int lifePoints, Category category, Weapon weapon)
         {
             Id = id;

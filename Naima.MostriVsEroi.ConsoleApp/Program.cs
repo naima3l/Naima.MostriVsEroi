@@ -115,7 +115,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             List<Monster> monsters = bl.GetMonstersByHeroLevel(hero.Level);
             Random random = new Random();
-            int monsterId = random.Next(monsters.Count + 1);
+            int monsterId = random.Next(monsters.Count + 1); // Arianna -> senza il +1
 
             Monster monster = bl.getMonsterById(monsterId);
 
@@ -257,6 +257,10 @@ namespace Naima.MostriVsEroi.ConsoleApp
             HeroChoice(id, hero, monster);
         }
 
+        //Arianna -> L'utente può cancellare solo eroi che appartendono a lui
+        // Nel mock ti conviene assegnare gli eroi ai tuoi utenti
+        // Gli eroi nel mock è come se fossero già stati creati dagli utenti
+ 
         private static void DeleteHero()
         {
             List<Hero> heroes = bl.ShowHeroes();
