@@ -78,6 +78,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
         {
             bool check = true;
             int choice;
+            int heroId, monsterId;
 
             do
             {
@@ -90,10 +91,12 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 switch(choice)
                 {
                     case 1:
-                        ChooseHero(user.Id);
+                        heroId = ChooseHero(user.Id);
+                        Play(user.Id, heroId);
                         break;
                     case 2:
-                        CreateHero(user.Id);
+                        heroId = CreateHero(user.Id);
+                        Play(user.Id, heroId);
                         break;
                     case 3:
                         DeleteHero();
@@ -104,6 +107,34 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 }
 
             } while (check);
+        }
+
+        private static void Play(int id, int heroId)
+        {
+            int level = bl.GetHeroLevel(heroId);
+            List<Monster> monsters = bl.GetMonstersByHeroLevel(level);
+            Random random = new Random();
+            int monsterId = random.Next(monsters.Count + 1);
+
+            int choice;
+            Console.WriteLine("Iniziamo!");
+            Console.WriteLine("Tocca a te eroe");
+            Console.WriteLine("Premi 1 per attaccare il mostro \nPremi 2 per fuggire");
+            while(!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 2)
+            {
+                Console.WriteLine("Scelta non valida. Riprova");
+            }
+            switch(choice)
+            {
+                case 1:
+                    Attack(heroId, monsterId);
+                    break;
+                case 2:
+                    RunAway();
+                    break;
+            }
+
+            
         }
 
         private static void DeleteHero()
@@ -128,7 +159,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
             Console.WriteLine(res);
         }
 
-        private static void CreateHero(int id)
+        private static int CreateHero(int id)
         {
             string name;
             int idCategory, idWeapon;
@@ -142,8 +173,8 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 Console.WriteLine("Inserisci un nome valido");
             }
 
-            List<Category> categories = bl.ShowCategoriesByDiscriminator(0);
-            if(categories.Count > 0)
+            List<Category> categories = bl.ShowCategoriesByDiscriminator(0); //discriminatore eroe
+            if (categories.Count > 0)
             {
                 foreach(var c in categories)
                 {
@@ -151,7 +182,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 }
             }
             Console.WriteLine("Inserisci l'id della categoria del tuo eroe");
-            while(!int.TryParse(Console.ReadLine(), out idCategory) || idCategory < 1 || idCategory > 5)
+            while(!int.TryParse(Console.ReadLine(), out idCategory) || idCategory < 1 || idCategory > categories.Count)
             {
                 Console.WriteLine("Inserisci un id valido!");
             }
@@ -175,9 +206,10 @@ namespace Naima.MostriVsEroi.ConsoleApp
             //creo l'eroe
             var res = bl.InsertNewHero(name, category, weapon, id);
             Console.WriteLine(res);
+            return bl.GetHeroByName(name);
         }
 
-        private static void ChooseHero(int id)
+        private static int ChooseHero(int id)
         {
             List<Hero> heroes = bl.ShowHeroes();
             if(heroes.Count > 0)
@@ -195,6 +227,8 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 Console.WriteLine("Id non valido! Riprova");
             }
             bl.UpdateHeroIdUser(idHero, id);
+
+            return idHero;
         }
 
         private static void Login()
@@ -234,7 +268,109 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         private static void ShowMenuAdmin(User user)
         {
-            throw new NotImplementedException();
+            bool check = true;
+            int choice;
+
+            do
+            {
+                Console.WriteLine("Premi 1 per GIOCA \nPremi 2 per CREA NUOVO EROE \nPremi 3 per ELIMINA EROE \nPremi 4 per CREA NUOVO MOSTRO \nPremi 5 per MOSTRA CLASSIFICA GLOBALE \nPremi 0 per ESCI");
+                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 5)
+                {
+                    Console.WriteLine("Scelta non valida! Riprova");
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        ChooseHero(user.Id);
+                        break;
+                    case 2:
+                        CreateHero(user.Id);
+                        break;
+                    case 3:
+                        DeleteHero();
+                        break;
+                    case 4:
+                        CreateMonster();
+                        break;
+                    case 5:
+                        ShowGloablRanking();
+                        break;
+                    case 0:
+                        check = false;
+                        break;
+                }
+
+            } while (check);
+        }
+
+        private static void ShowGloablRanking()
+        {
+            List<Hero> bestHeroes = bl.ShowBest10Heroes();
+            if(bestHeroes.Count > 0)
+            {
+                if(bestHeroes.Count < 10)
+                {
+                    Console.WriteLine($"Non ci sono ancora 10 migliori eroi");
+                    return;
+                }
+                Console.WriteLine($"I migliori 10 eroi di ordine di livello sono:");
+                foreach(var h in bestHeroes)
+                {
+                    Console.WriteLine($"{h.Name} {h.Level} {h.AccumulatedPoints}");
+                }
+            }
+            Console.WriteLine("Al momento non è possibile mostrare la classifica dei 10 migliori eroi");
+            return;
+        }
+
+        private static void CreateMonster()
+        {
+            string name;
+            int idCategory, idWeapon;
+            Category category;
+            Weapon weapon;
+
+            Console.WriteLine("Inserisci il nome del mostro che vuoi creare");
+            name = Console.ReadLine();
+            while (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Inserisci un nome valido");
+            }
+
+            List<Category> categories = bl.ShowCategoriesByDiscriminator(1); //discriminatore mostro
+            if (categories.Count > 0)
+            {
+                foreach (var c in categories)
+                {
+                    Console.WriteLine($"{c.idCategory}, {c.Name}");
+                }
+            }
+            Console.WriteLine("Inserisci l'id della categoria del tuo mostro");
+            while (!int.TryParse(Console.ReadLine(), out idCategory) || idCategory < 1 || idCategory > 5)
+            {
+                Console.WriteLine("Inserisci un id valido!");
+            }
+            category = bl.GetCategoryById(idCategory);
+
+            List<Weapon> weapons = bl.ShowWeaponsByCategory(idCategory);
+            if (weapons.Count > 0)
+            {
+                foreach (var w in weapons)
+                {
+                    Console.WriteLine($"{w.IdWeapon}, {w.Name}, Punti danno : {w.DamagePoints}");
+                }
+            }
+            Console.WriteLine("Inserisci l'id dell'arma del tuo mostro");
+            while (!int.TryParse(Console.ReadLine(), out idWeapon) || idWeapon < 1 || idWeapon > 24)
+            {
+                Console.WriteLine("Inserisci un id valido!");
+            }
+            weapon = bl.GetWeaponById(idWeapon);
+
+            //creo l'eroe
+            var res = bl.InsertNewMonster(name, category, weapon);
+            Console.WriteLine(res);
         }
     }
 }

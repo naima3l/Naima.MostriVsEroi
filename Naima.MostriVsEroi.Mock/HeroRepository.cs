@@ -47,6 +47,28 @@ namespace Naima.MostriVsEroi.Mock
             return heroes;
         }
 
+        public List<Hero> ShowBest10Heroes()
+        {
+            var best = heroes.OrderByDescending(h => h.Level);
+            
+            if(best.Count() == 0)
+            {
+                return null;
+            }
+            List<Hero> h = new List<Hero>();
+            foreach(var b in best)
+            {
+                h.Add(b);
+            }
+
+            return h;
+        }
+
+        private Hero getById(int idPlayer)
+        {
+            return heroes.Find(h=> h.IdPlayer == idPlayer);
+        }
+
         public void UpdateUserId(int idHero, int id)
         {
             var hero = heroes.Find(u => u.Id == idHero);
@@ -56,6 +78,18 @@ namespace Naima.MostriVsEroi.Mock
             h.IdPlayer = id;
             heroes.Add(h);
 
+        }
+
+        public int GetIdByName(string name)
+        {
+            var hero =  heroes.FirstOrDefault(h => h.Name == name);
+            return (int)hero.Id;
+        }
+
+        public int GetLevel(int heroId)
+        {
+            var hero = heroes.Find(h => h.Id == heroId);
+            return hero.Level;
         }
     }
 }

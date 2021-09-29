@@ -8,5 +8,9 @@ namespace Naima.MostriVsEroi.Core.Entities
 {
     public class Monster : Character
     {
+        public Monster(int? id, string name, int level, int lifePoints, Category category, Weapon weapon)
+            : base(id, name, level, lifePoints, category, weapon)
+        {
+        }
     }
 }

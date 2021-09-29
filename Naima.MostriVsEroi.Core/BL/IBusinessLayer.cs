@@ -21,5 +21,10 @@ namespace Naima.MostriVsEroi.Core.BL
         Weapon GetWeaponById(int idWeapon);
         string InsertNewHero(string name, Category category, Weapon weapon, int id);
         string DeleteHero(int idHero);
+        string InsertNewMonster(string name, Category category, Weapon weapon);
+        List<Hero> ShowBest10Heroes();
+        int GetHeroByName(string name);
+        int GetHeroLevel(int heroId);
+        List<Monster> GetMonstersByHeroLevel(int level);
     }
 }

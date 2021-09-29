@@ -9,5 +9,7 @@ namespace Naima.MostriVsEroi.Core.Repositories
 {
     public interface IMonsterRepository : IRepository<Monster>
     {
+        bool AddNewMonster(string name, Category category, Weapon weapon);
+        List<Monster> GetMonstersByHeroLevel(int level);
     }
 }

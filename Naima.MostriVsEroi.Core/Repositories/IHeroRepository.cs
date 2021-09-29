@@ -13,5 +13,8 @@ namespace Naima.MostriVsEroi.Core.Repositories
         void UpdateUserId(int idHero, int id);
         Hero AddNewHero(string name, Category category, Weapon weapon, int id);
         Hero DeleteById(int idHero);
+        List<Hero> ShowBest10Heroes();
+        int GetIdByName(string name);
+        int GetLevel(int heroId);
     }
 }

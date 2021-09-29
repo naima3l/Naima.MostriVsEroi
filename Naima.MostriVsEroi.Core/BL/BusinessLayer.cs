@@ -50,6 +50,21 @@ namespace Naima.MostriVsEroi.Core.BL
             return categoryRepo.GetById(idCategory);
         }
 
+        public int GetHeroByName(string name)
+        {
+            return heroRepo.GetIdByName(name);
+        }
+
+        public int GetHeroLevel(int heroId)
+        {
+            return heroRepo.GetLevel(heroId);
+        }
+
+        public List<Monster> GetMonstersByHeroLevel(int level)
+        {
+            return monsterRepo.GetMonstersByHeroLevel(level);
+        }
+
         public User GetUserByNickname(string nickname)
         {
             return userRepo.GetUserByNickname(nickname);
@@ -78,6 +93,21 @@ namespace Naima.MostriVsEroi.Core.BL
                 return "Eroe inserito";
             }
             return "Si è verificato un problema nell'inserimento dell'eroe";
+        }
+
+        public string InsertNewMonster(string name, Category category, Weapon weapon)
+        {
+            var monster = monsterRepo.AddNewMonster(name, category, weapon);
+            if(monster == true)
+            {
+                return "Il mostro è stato creato correttamente";
+            }
+            return "Si è verificato un problema nella creazione del mostro";
+        }
+
+        public List<Hero> ShowBest10Heroes()
+        {
+            return heroRepo.ShowBest10Heroes();
         }
 
         public List<Category> ShowCategoriesByDiscriminator(int v)
