@@ -35,9 +35,9 @@ namespace Naima.MostriVsEroi.Core.BL
             return userRepo.CheckDiscriminator(nickname);
         }
 
-        public string DeleteHero(int idHero)
+        public string DeleteHero(int idHero, int id)
         {
-            var heroToDelete = heroRepo.DeleteById(idHero);
+            var heroToDelete = heroRepo.DeleteById(idHero,id);
             if(heroToDelete !=null)
             {
                 return "L'eroe è stato cancellato";
@@ -58,6 +58,11 @@ namespace Naima.MostriVsEroi.Core.BL
         public int GetHeroByName(string name)
         {
             return heroRepo.GetIdByName(name);
+        }
+
+        public int GetHeroesLevel3ByPlayer(int id)
+        {
+            return heroRepo.GetHeroesLevel3ByPlayer(id);
         }
 
         public int GetHeroLevel(int heroId)
@@ -145,6 +150,11 @@ namespace Naima.MostriVsEroi.Core.BL
             return heroRepo.GetAll();
         }
 
+        public List<Hero> ShowHeroesByPlayer(int id)
+        {
+            return heroRepo.GetByPlayer(id);
+        }
+
         public List<Weapon> ShowWeaponsByCategory(int idCategory)
         {
             return weaponRepo.ShowWeaponsByCategory(idCategory);
@@ -168,6 +178,11 @@ namespace Naima.MostriVsEroi.Core.BL
         public Monster UpdateMonsterLifePoints(int lifePoints, int id)
         {
             return monsterRepo.UpdateLifePoints(lifePoints, id);
+        }
+
+        public User UpdateUser(User user)
+        {
+            return userRepo.Update(user);
         }
     }
 }

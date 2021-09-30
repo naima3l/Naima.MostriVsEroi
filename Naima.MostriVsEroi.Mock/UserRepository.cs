@@ -56,5 +56,14 @@ namespace Naima.MostriVsEroi.Mock
             users.Add(user);
             return true;
         }
+
+        public User Update(User user)
+        {
+            var u = users.Find(u => u.Id == user.Id);
+            users.Remove(u);
+            users.Add(user);
+
+            return user;
+        }
     }
 }

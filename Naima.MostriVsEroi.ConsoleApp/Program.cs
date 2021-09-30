@@ -8,36 +8,41 @@ namespace Naima.MostriVsEroi.ConsoleApp
 {
     class Program
     {
-        private static readonly IBusinessLayer bl = new BusinessLayer(new HeroRepository(),new MonsterRepository(), new UserRepository(), new CategoryRepository(), new WeaponRepository());
+        private static readonly IBusinessLayer bl = new BusinessLayer(new HeroRepository(), new MonsterRepository(), new UserRepository(), new CategoryRepository(), new WeaponRepository());
         static void Main(string[] args)
         {
-            bool check = true;
-            int choice;
-            do
-            {
-                Console.WriteLine("Benvenuto a 'Mostri vs Eroi' !");
-                Console.WriteLine("Premi 1 per accedere \nPremi 2 per registrarti \nPremi 0 per uscire");
-                while(!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 2)
-                {
-                    Console.WriteLine("Scelta non valida! Riprova");
-                }
+            Menu();
 
-                switch(choice)
-                {
-                    case 1:
-                        Login();
-                        break;
-                    case 2:
-                        Register();
-                        break;
-                    case 0:
-                        Console.WriteLine("Alla prossima partita!");
-                        check = false;
-                        break;
-                }
-            } while (check);    
-            
         }
+
+
+        private static void Menu()
+        {
+            int choice;
+            //do
+            //{
+            Console.WriteLine("Benvenuto a 'Mostri vs Eroi' !");
+            Console.WriteLine("Premi 1 per accedere \nPremi 2 per registrarti \nPremi 0 per uscire");
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 2)
+            {
+                Console.WriteLine("Scelta non valida! Riprova");
+            }
+
+            switch (choice)
+            {
+                case 1:
+                    Login();
+                    break;
+                case 2:
+                    Register();
+                    break;
+                case 0:
+                    Console.WriteLine("Alla prossima partita!");
+                    break;
+            }
+            //} while (check);
+        }  //QUI => il problema è che quando finisco la partita, se premo 0 per non giocare più lui torna al suo menù corrispondente,
+                                       //ma se clicco di nuovo zero poi non ritorna al MenuIniziale ma torna alla fine della partita, e non esce mai praticamente
 
         private static void Register()
         {
@@ -60,7 +65,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
             }
 
             var checkExistance = bl.CheckCredentials(nickname, password);
-            if(checkExistance == false) //vuol dire che non è già registrato, allora posso aggiungerlo alla lista di utenti
+            if (checkExistance == false) //vuol dire che non è già registrato, allora posso aggiungerlo alla lista di utenti
             {
                 var res = bl.InserNewUser(nickname, password);
                 Console.WriteLine(res);
@@ -76,37 +81,36 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         private static void ShowMenuNotAdmin(User user)
         {
-            bool check = true;
             int choice;
             int heroId;
 
-            do
+            //do
+            //{
+            Console.WriteLine("Premi 1 per GIOCA \nPremi 2 per CREA NUOVO EROE \nPremi 3 per ELIMINA EROE \nPremi 0 per ESCI");
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 3)
             {
-                Console.WriteLine("Premi 1 per GIOCA \nPremi 2 per CREA NUOVO EROE \nPremi 3 per ELIMINA EROE \nPremi 0 per ESCI");
-                while(!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 3)
-                {
-                    Console.WriteLine("Scelta non valida! Riprova");
-                }
+                Console.WriteLine("Scelta non valida! Riprova");
+            }
 
-                switch(choice)
-                {
-                    case 1:
-                        heroId = ChooseHero(user.Id);
-                        Play(user.Id, heroId);
-                        break;
-                    case 2:
-                        heroId = CreateHero(user.Id);
-                        Play(user.Id, heroId);
-                        break;
-                    case 3:
-                        DeleteHero();
-                        break;
-                    case 0:
-                        check = false;
-                        break;
-                }
+            switch (choice)
+            {
+                case 1:
+                    heroId = ChooseHero(user.Id);
+                    Play(user.Id, heroId);
+                    break;
+                case 2:
+                    heroId = CreateHero(user.Id);
+                    Play(user.Id, heroId);
+                    break;
+                case 3:
+                    DeleteHero(user.Id);
+                    break;
+                case 0:
+                    Menu();
+                    break;
+            }
 
-            } while (check);
+            //} while (check);
         }
 
         public static void Play(int id, int heroId)
@@ -115,18 +119,18 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             List<Monster> monsters = bl.GetMonstersByHeroLevel(hero.Level);
             Random random = new Random();
-            int monsterId = random.Next(monsters.Count + 1); // Arianna -> senza il +1
+            int monsterId = random.Next(1, monsters.Count); // Arianna -> senza il +1
 
             Monster monster = bl.getMonsterById(monsterId);
 
             Console.WriteLine("Iniziamo!");
-            HeroChoice(id,hero, monster);
+            HeroChoice(id, hero, monster);
 
-            
-            
+
+
         }
 
-        private static void HeroChoice(int id,Hero hero, Monster monster)
+        private static void HeroChoice(int id, Hero hero, Monster monster)
         {
             User user = bl.GetUserById(id);
             int choice;
@@ -145,34 +149,34 @@ namespace Naima.MostriVsEroi.ConsoleApp
                         break;
                     case 2:
                         int c = RunAway(id, hero, monster);
-                        if( c > 0)
+                        if (c > 0)
                         {
                             break;
                         }
                         break;
                 }
-            } while (hero.LifePoints > 0 || monster.LifePoints > 0);
+            } while (hero.LifePoints > 0 && monster.LifePoints > 0);
 
-            if(hero.LifePoints > 0)
+            if (hero.LifePoints > 0)
             {
                 hero.AccumulatedPoints += (monster.Level * 10);
                 Console.WriteLine("Hai vinto!");
-                if(hero.AccumulatedPoints >= 30 && hero.AccumulatedPoints <= 59)
+                if (hero.AccumulatedPoints >= 30 && hero.AccumulatedPoints <= 59 && hero.Level <= 2)
                 {
                     hero.AccumulatedPoints = 0;
                     hero.Level = 2;
                 }
-                else if(hero.AccumulatedPoints >= 60 && hero.AccumulatedPoints <= 89)
+                else if (hero.AccumulatedPoints >= 60 && hero.AccumulatedPoints <= 89 && hero.Level <= 3)
                 {
                     hero.AccumulatedPoints = 0;
                     hero.Level = 3;
                 }
-                else if(hero.AccumulatedPoints >= 90 && hero.AccumulatedPoints <= 119)
+                else if (hero.AccumulatedPoints >= 90 && hero.AccumulatedPoints <= 119 && hero.Level <= 4)
                 {
                     hero.AccumulatedPoints = 0;
                     hero.Level = 4;
                 }
-                else if(hero.AccumulatedPoints >=120)
+                else if (hero.AccumulatedPoints >= 120 && hero.Level <= 5)
                 {
                     hero.AccumulatedPoints = 0;
                     hero.Level = 5;
@@ -217,11 +221,18 @@ namespace Naima.MostriVsEroi.ConsoleApp
                     HeroChoice(id, hero, monster);
                     break;
                 case 0:
+                    if (user.UserDiscriminator == 0)
+                    {
+                        ShowMenuNotAdmin(user);
+                        return;
+                    }
+                    else ShowMenuAdmin(user);
+
                     break;
             }
         }
-       
-        private static int RunAway(int id,Hero hero, Monster monster)
+
+        private static int RunAway(int id, Hero hero, Monster monster)
         {
             Random random = new Random();
             bool choice = Convert.ToBoolean(random.Next(2));
@@ -244,7 +255,15 @@ namespace Naima.MostriVsEroi.ConsoleApp
             int lifePoints = monster.LifePoints - hero.Weapon.DamagePoints;
             monster = bl.UpdateMonsterLifePoints(lifePoints, (int)monster.Id);
 
-            MonsterAttack(id, hero, monster);
+            if (monster.LifePoints <= 0)
+            {
+                return;
+            }
+            else
+            {
+                MonsterAttack(id, hero, monster);
+            }
+
         }
 
 
@@ -253,17 +272,20 @@ namespace Naima.MostriVsEroi.ConsoleApp
             int lifePoints = hero.LifePoints - monster.Weapon.DamagePoints;
             hero = bl.UpdateHeroLifePoints(lifePoints, (int)hero.Id);
 
-
-            HeroChoice(id, hero, monster);
+            if (hero.LifePoints <= 0)
+            {
+                return;
+            }
+            else
+            {
+                HeroChoice(id, hero, monster);
+            }
         }
 
-        //Arianna -> L'utente può cancellare solo eroi che appartendono a lui
-        // Nel mock ti conviene assegnare gli eroi ai tuoi utenti
-        // Gli eroi nel mock è come se fossero già stati creati dagli utenti
- 
-        private static void DeleteHero()
+
+        private static void DeleteHero(int id)
         {
-            List<Hero> heroes = bl.ShowHeroes();
+            List<Hero> heroes = bl.ShowHeroesByPlayer(id);
             if (heroes.Count > 0)
             {
                 foreach (var h in heroes)
@@ -279,7 +301,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 Console.WriteLine("Id non valido! Riprova");
             }
 
-            var res = bl.DeleteHero(idHero);
+            var res = bl.DeleteHero(idHero, id);
             Console.WriteLine(res);
         }
 
@@ -292,7 +314,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             Console.WriteLine("Inserisci il nome dell'eroe che vuoi creare");
             name = Console.ReadLine();
-            while(string.IsNullOrEmpty(name))
+            while (string.IsNullOrEmpty(name))
             {
                 Console.WriteLine("Inserisci un nome valido");
             }
@@ -300,22 +322,22 @@ namespace Naima.MostriVsEroi.ConsoleApp
             List<Category> categories = bl.ShowCategoriesByDiscriminator(0); //discriminatore eroe
             if (categories.Count > 0)
             {
-                foreach(var c in categories)
+                foreach (var c in categories)
                 {
                     Console.WriteLine($"{c.idCategory}, {c.Name}");
                 }
             }
             Console.WriteLine("Inserisci l'id della categoria del tuo eroe");
-            while(!int.TryParse(Console.ReadLine(), out idCategory) || idCategory < 1 || idCategory > categories.Count)
+            while (!int.TryParse(Console.ReadLine(), out idCategory) || idCategory < 1 || idCategory > categories.Count)
             {
                 Console.WriteLine("Inserisci un id valido!");
             }
             category = bl.GetCategoryById(idCategory);
 
-            List<Weapon> weapons =  bl.ShowWeaponsByCategory(idCategory);
-            if(weapons.Count > 0)
+            List<Weapon> weapons = bl.ShowWeaponsByCategory(idCategory);
+            if (weapons.Count > 0)
             {
-                foreach(var w in weapons)
+                foreach (var w in weapons)
                 {
                     Console.WriteLine($"{w.IdWeapon}, {w.Name}, Punti danno : {w.DamagePoints}");
                 }
@@ -336,17 +358,17 @@ namespace Naima.MostriVsEroi.ConsoleApp
         private static int ChooseHero(int id)
         {
             List<Hero> heroes = bl.ShowHeroes();
-            if(heroes.Count > 0)
+            if (heroes.Count > 0)
             {
-                foreach(var h in heroes)
+                foreach (var h in heroes)
                 {
-                    Console.WriteLine($"{h.Id}, {h.Name}, {h.Level}, {h.LifePoints}, {h.Weapon}");
+                    Console.WriteLine($"{h.Id}, {h.Name}, {h.Level}, {h.LifePoints}, {h.Weapon.Name} {h.Weapon.DamagePoints}");
                 }
             }
 
             Console.WriteLine("Scegli l'erore indicando il suo id");
             int idHero;
-            while(!int.TryParse(Console.ReadLine(), out idHero) || idHero < 0 || idHero > heroes.Count)
+            while (!int.TryParse(Console.ReadLine(), out idHero) || idHero < 0 || idHero > heroes.Count)
             {
                 Console.WriteLine("Id non valido! Riprova");
             }
@@ -361,20 +383,20 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             Console.WriteLine("Inserisci il tuo nickname");
             nickname = Console.ReadLine();
-            while(string.IsNullOrEmpty(nickname))
+            while (string.IsNullOrEmpty(nickname))
             {
                 Console.WriteLine("Inserisci un nickname valido");
             }
 
             Console.WriteLine("Inserisci la tua password");
             password = Console.ReadLine();
-            while (string.IsNullOrEmpty(nickname) || nickname.Length < 6) //ho stabilito che la lunghezza della password fosse 6
+            while (string.IsNullOrEmpty(nickname))// || nickname.Length < 6) //ho stabilito che la lunghezza della password fosse 6
             {
                 Console.WriteLine("Inserisci una password valida (max 6)");
             }
 
             var checkCredentials = bl.CheckCredentials(nickname, password);
-            if(checkCredentials == false)
+            if (checkCredentials == false)
             {
                 Console.WriteLine("Nickname o password errati");
                 return;
@@ -384,9 +406,15 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             //TO DO
             //Quando un utente possiede almeno un eroe di livello 3, diventa admin.
+            int levelHeros = bl.GetHeroesLevel3ByPlayer(user.Id);
+            if (levelHeros > 0)
+            {
+                user.UserDiscriminator = 1;
+                user = bl.UpdateUser(user);
+            }
 
             var checkAdmin = bl.CheckDiscriminator(nickname);
-            if(checkAdmin == false) //non admin
+            if (checkAdmin == false) //non admin
             {
                 ShowMenuNotAdmin(user);
             }
@@ -397,6 +425,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
         {
             bool check = true;
             int choice;
+            int heroId;
 
             do
             {
@@ -409,13 +438,15 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 switch (choice)
                 {
                     case 1:
-                        ChooseHero(user.Id);
+                        heroId = ChooseHero(user.Id);
+                        Play(user.Id, heroId);
                         break;
                     case 2:
-                        CreateHero(user.Id);
+                        heroId = CreateHero(user.Id);
+                        Play(user.Id, heroId);
                         break;
                     case 3:
-                        DeleteHero();
+                        DeleteHero(user.Id);
                         break;
                     case 4:
                         CreateMonster();
@@ -434,20 +465,29 @@ namespace Naima.MostriVsEroi.ConsoleApp
         private static void ShowGloablRanking()
         {
             List<Hero> bestHeroes = bl.ShowBest10Heroes();
-            if(bestHeroes.Count > 0)
+            int count = 1;
+            if (bestHeroes.Count > 0)
             {
-                if(bestHeroes.Count < 10)
+                if (bestHeroes.Count < 10)
                 {
-                    Console.WriteLine($"Non ci sono ancora 10 migliori eroi");
+                    Console.WriteLine($"Non ci sono ancora 10 migliori eroi, ma ti farò vedere i migliori che ho");
+                    foreach (var h in bestHeroes)
+                    {
+                        if(count < 10)
+                        {
+                            Console.WriteLine($"{h.Name} {h.Level} {h.AccumulatedPoints}");
+                            count++;
+                        }
+                    }
                     return;
                 }
                 Console.WriteLine($"I migliori 10 eroi di ordine di livello sono:");
-                foreach(var h in bestHeroes)
+                foreach (var h in bestHeroes)
                 {
                     Console.WriteLine($"{h.Name} {h.Level} {h.AccumulatedPoints}");
                 }
             }
-            Console.WriteLine("Al momento non è possibile mostrare la classifica dei 10 migliori eroi");
+            else Console.WriteLine("Al momento non è possibile mostrare la classifica dei 10 migliori eroi");
             return;
         }
 

@@ -12,11 +12,17 @@ namespace Naima.MostriVsEroi.Mock
     {
         private static List<Hero> heroes = new List<Hero>()
         {
-            new Hero(1, "The Victorious Bandit", 1,20, new Category(1,"Guerriero", 0), new Weapon(1,"Alabarda", 1, 15),0, null), //livello 1
-            new Hero(2, "The Red Caped Spirit", 2,40, new Category(2,"Mago", 0), new Weapon(9,"Onda d'urto", 2, 15),0, null), //2
-            new Hero(3, "Kinetic Rattler", 3,60, new Category(2,"Mago", 0), new Weapon(7,"Bacchetta", 2, 5),0, null), //3
-            new Hero(4, "Triumphant Orphan", 4,80, new Category(2,"Mago", 0), new Weapon(8,"Bastone Magico", 2, 10),0, null), //4
-            new Hero(5, "Nuclear Arctic Fox", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, null) //5
+            new Hero(1, "The Victorious Bandit", 1,20, new Category(1,"Guerriero", 0), new Weapon(1,"Alabarda", 1, 15),0, 1), //livello 1
+            new Hero(2, "The Red Caped Spirit", 2,40, new Category(2,"Mago", 0), new Weapon(9,"Onda d'urto", 2, 15),0, 2), //2
+            new Hero(3, "Kinetic Rattler", 3,60, new Category(2,"Mago", 0), new Weapon(7,"Bacchetta", 2, 5),0, 3), //3
+            new Hero(4, "Triumphant Orphan", 4,80, new Category(2,"Mago", 0), new Weapon(8,"Bastone Magico", 2, 10),0, 1), //4
+            new Hero(5, "Nuclear Arctic Fox", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //5
+            new Hero(6, "All-Seeing Pythoness", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
+            new Hero(7, "Snapping Toreador", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
+            new Hero(8, "Celestial Dagger", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
+            new Hero(9, "Grim Lizardwoman", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
+            new Hero(10, "The Peculiar Fire Giant", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
+            new Hero(11, "The Invisible Sharpshooter", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3) //
         };
 
         public Hero AddNewHero(string name, Category category, Weapon weapon, int id)
@@ -36,9 +42,9 @@ namespace Naima.MostriVsEroi.Mock
             return hero;
         }
 
-        public Hero DeleteById(int idHero)
+        public Hero DeleteById(int idHero, int id)
         {
-            Hero hero = heroes.Find(u => u.Id == idHero);
+            Hero hero = heroes.FirstOrDefault(u => u.Id == idHero && u.IdPlayer == id);
             heroes.Remove(hero);
             return hero;
         }
@@ -50,16 +56,17 @@ namespace Naima.MostriVsEroi.Mock
 
         public List<Hero> ShowBest10Heroes()
         {
-            var best = heroes.OrderByDescending(h => h.Level);
+            var best = heroes.OrderByDescending(h => h.Level);//.ThenBy(h=> h.AccumulatedPoints);
+            var b = best.OrderByDescending(h => h.AccumulatedPoints);
             
-            if(best.Count() == 0)
+            if(b.Count() == 0)
             {
                 return null;
             }
             List<Hero> h = new List<Hero>();
-            foreach(var b in best)
+            foreach(var bt in b)
             {
-                h.Add(b);
+                h.Add(bt);
             }
 
             return h;
@@ -124,6 +131,17 @@ namespace Naima.MostriVsEroi.Mock
             heroes.Remove(h);
 
             heroes.Add(hero);
+        }
+
+        public List<Hero> GetByPlayer(int id)
+        {
+            return heroes.Where(h => h.IdPlayer == id).ToList();
+        }
+
+        public int GetHeroesLevel3ByPlayer(int id)
+        {
+            var h = heroes.Where(u => u.IdPlayer == id && u.Level == 3);
+            return h.Count();
         }
     }
 }

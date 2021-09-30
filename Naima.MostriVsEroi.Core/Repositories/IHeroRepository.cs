@@ -12,7 +12,7 @@ namespace Naima.MostriVsEroi.Core.Repositories
         List<Hero> GetAll();
         void UpdateUserId(int idHero, int id);
         Hero AddNewHero(string name, Category category, Weapon weapon, int id);
-        Hero DeleteById(int idHero);
+        Hero DeleteById(int idHero, int id);
         List<Hero> ShowBest10Heroes();
         int GetIdByName(string name);
         int GetLevel(int heroId);
@@ -20,5 +20,7 @@ namespace Naima.MostriVsEroi.Core.Repositories
         Hero GetById(int heroId);
         Hero UpdateLifePoints(int lifePoints, int id);
         void UpdateHero(Hero hero);
+        List<Hero> GetByPlayer(int id);
+        int GetHeroesLevel3ByPlayer(int id);
     }
 }

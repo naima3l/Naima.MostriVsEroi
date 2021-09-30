@@ -20,7 +20,7 @@ namespace Naima.MostriVsEroi.Core.BL
         List<Weapon> ShowWeaponsByCategory(int idCategory);
         Weapon GetWeaponById(int idWeapon);
         string InsertNewHero(string name, Category category, Weapon weapon, int id);
-        string DeleteHero(int idHero);
+        string DeleteHero(int idHero, int id);
         string InsertNewMonster(string name, Category category, Weapon weapon);
         List<Hero> ShowBest10Heroes();
         int GetHeroByName(string name);
@@ -34,5 +34,8 @@ namespace Naima.MostriVsEroi.Core.BL
         Hero UpdateHeroLifePoints(int lifePoints, int id);
         void UpdateHero(Hero hero);
         User GetUserById(int id);
+        List<Hero> ShowHeroesByPlayer(int id);
+        int GetHeroesLevel3ByPlayer(int id);
+        User UpdateUser(User user);
     }
 }

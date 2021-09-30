@@ -14,5 +14,6 @@ namespace Naima.MostriVsEroi.Core.Repositories
         bool CheckDiscriminator(string nickname);
         User GetUserByNickname(string nickname);
         User GetById(int id);
+        User Update(User user);
     }
 }
