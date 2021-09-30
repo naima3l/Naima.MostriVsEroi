@@ -130,7 +130,8 @@ namespace Naima.MostriVsEroi.ConsoleApp
             HeroChoice(id, hero, monster);
 
 
-
+            //giocare di nuovo
+            PlayAgain(id, hero, monster);
         }
 
         private static void HeroChoice(int id, Hero hero, Monster monster)
@@ -194,8 +195,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
 
 
-            //giocare di nuovo
-            PlayAgain(id, hero, monster);
+           
             
         }
 
@@ -278,7 +278,6 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         }
 
-
         private static void MonsterAttack(int id, Hero hero, Monster monster)
         {
             int lifePoints = hero.LifePoints - monster.Weapon.DamagePoints;
@@ -293,7 +292,6 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 HeroChoice(id, hero, monster);
             }
         }
-
 
         private static void DeleteHero(int id)
         {
