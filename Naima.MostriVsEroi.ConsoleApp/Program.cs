@@ -43,6 +43,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
                         break;
                 }
             } while (continuare);
+            return;
         }  //QUI => il problema è che quando finisco la partita, se premo 0 per non giocare più lui torna al suo menù corrispondente,
            //ma se clicco di nuovo zero poi non ritorna al MenuIniziale ma torna alla fine della partita, e non esce mai praticamente
 
@@ -98,7 +99,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 {
                     case 1:
                         heroId = ChooseHero(user.Id);
-                        Play(user.Id, heroId);
+                        continuare =Play(user.Id, heroId);
                         break;
                     case 2:
                         heroId = CreateHero(user.Id);
@@ -116,7 +117,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         }
 
-        public static void Play(int id, int heroId)
+        public static bool Play(int id, int heroId)
         {
             Hero hero = bl.GetHeroById(heroId);
 
@@ -129,9 +130,8 @@ namespace Naima.MostriVsEroi.ConsoleApp
             Console.WriteLine("Iniziamo!");
             HeroChoice(id, hero, monster);
 
-
             //giocare di nuovo
-            PlayAgain(id, hero, monster);
+            return PlayAgain(id, hero, monster);
         }
 
         private static void HeroChoice(int id, Hero hero, Monster monster)
@@ -199,7 +199,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
             
         }
 
-        private static void PlayAgain(int id, Hero hero, Monster monster)
+        private static bool PlayAgain(int id, Hero hero, Monster monster)
         {
             int choice;
 
@@ -231,17 +231,21 @@ namespace Naima.MostriVsEroi.ConsoleApp
                     monster = bl.getMonsterById(monsterId);
 
                     HeroChoice(id, hero, monster);
+
                     break;
                 case 0:
                     if (user.UserDiscriminator == 0)
                     {
                         ShowMenuNotAdmin(user);
-                        return;
+                        return false;
                     }
-                    else ShowMenuAdmin(user);
-
-                    break;
+                    else
+                    {
+                        ShowMenuAdmin(user);
+                        return false;
+                    }
             }
+            return true;
         }
 
         private static int RunAway(int id, Hero hero, Monster monster)
