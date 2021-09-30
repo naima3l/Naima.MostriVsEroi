@@ -18,31 +18,33 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         private static void Menu()
         {
+            bool continuare = true;
             int choice;
-            //do
-            //{
-            Console.WriteLine("Benvenuto a 'Mostri vs Eroi' !");
-            Console.WriteLine("Premi 1 per accedere \nPremi 2 per registrarti \nPremi 0 per uscire");
-            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 2)
+            do
             {
-                Console.WriteLine("Scelta non valida! Riprova");
-            }
+                Console.WriteLine("Benvenuto a 'Mostri vs Eroi' !");
+                Console.WriteLine("Premi 1 per accedere \nPremi 2 per registrarti \nPremi 0 per uscire");
+                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 2)
+                {
+                    Console.WriteLine("Scelta non valida! Riprova");
+                }
 
-            switch (choice)
-            {
-                case 1:
-                    Login();
-                    break;
-                case 2:
-                    Register();
-                    break;
-                case 0:
-                    Console.WriteLine("Alla prossima partita!");
-                    break;
-            }
-            //} while (check);
+                switch (choice)
+                {
+                    case 1:
+                        Login();
+                        break;
+                    case 2:
+                        Register();
+                        break;
+                    case 0:
+                        Console.WriteLine("Alla prossima partita!");
+                        continuare = false;
+                        break;
+                }
+            } while (continuare);
         }  //QUI => il problema è che quando finisco la partita, se premo 0 per non giocare più lui torna al suo menù corrispondente,
-                                       //ma se clicco di nuovo zero poi non ritorna al MenuIniziale ma torna alla fine della partita, e non esce mai praticamente
+           //ma se clicco di nuovo zero poi non ritorna al MenuIniziale ma torna alla fine della partita, e non esce mai praticamente
 
         private static void Register()
         {
@@ -83,34 +85,35 @@ namespace Naima.MostriVsEroi.ConsoleApp
         {
             int choice;
             int heroId;
-
-            //do
-            //{
-            Console.WriteLine("Premi 1 per GIOCA \nPremi 2 per CREA NUOVO EROE \nPremi 3 per ELIMINA EROE \nPremi 0 per ESCI");
-            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 3)
+            bool continuare = true;
+            do
             {
-                Console.WriteLine("Scelta non valida! Riprova");
-            }
+                Console.WriteLine("Premi 1 per GIOCA \nPremi 2 per CREA NUOVO EROE \nPremi 3 per ELIMINA EROE \nPremi 0 per ESCI");
+                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 3)
+                {
+                    Console.WriteLine("Scelta non valida! Riprova");
+                }
 
-            switch (choice)
-            {
-                case 1:
-                    heroId = ChooseHero(user.Id);
-                    Play(user.Id, heroId);
-                    break;
-                case 2:
-                    heroId = CreateHero(user.Id);
-                    Play(user.Id, heroId);
-                    break;
-                case 3:
-                    DeleteHero(user.Id);
-                    break;
-                case 0:
-                    Menu();
-                    break;
-            }
+                switch (choice)
+                {
+                    case 1:
+                        heroId = ChooseHero(user.Id);
+                        Play(user.Id, heroId);
+                        break;
+                    case 2:
+                        heroId = CreateHero(user.Id);
+                        Play(user.Id, heroId);
+                        break;
+                    case 3:
+                        DeleteHero(user.Id);
+                        break;
+                    case 0:
+                        Menu();
+                        continuare = false;
+                        break;
+                }
+            } while (continuare);
 
-            //} while (check);
         }
 
         public static void Play(int id, int heroId)
@@ -473,7 +476,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
                     Console.WriteLine($"Non ci sono ancora 10 migliori eroi, ma ti farò vedere i migliori che ho");
                     foreach (var h in bestHeroes)
                     {
-                        if(count < 10)
+                        if (count < 10)
                         {
                             Console.WriteLine($"{h.Name} {h.Level} {h.AccumulatedPoints}");
                             count++;
