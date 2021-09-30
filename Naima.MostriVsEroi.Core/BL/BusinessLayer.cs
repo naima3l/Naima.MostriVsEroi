@@ -75,6 +75,30 @@ namespace Naima.MostriVsEroi.Core.BL
             return heroRepo.GetLife(heroId);
         }
 
+        public int GetLifePointsByLevel(int level)
+        {
+            if(level == 1)
+            {
+                return 20;
+            }
+            else if(level == 2)
+            {
+                return 40;
+            }
+            else if (level == 3)
+            {
+                return 60;
+            }
+            else if (level == 4)
+            {
+                return 80;
+            }
+            else  
+            {
+                return 100;
+            }
+        }
+
         public Monster getMonsterById(int monsterId)
         {
             return monsterRepo.GetById(monsterId);
@@ -175,9 +199,9 @@ namespace Naima.MostriVsEroi.Core.BL
             return heroRepo.UpdateLifePoints(lifePoints, id);
         }
 
-        public Monster UpdateMonsterLifePoints(int lifePoints, int id)
+        public Monster UpdateMonster(Monster monster)
         {
-            return monsterRepo.UpdateLifePoints(lifePoints, id);
+            return monsterRepo.Update(monster);
         }
 
         public User UpdateUser(User user)

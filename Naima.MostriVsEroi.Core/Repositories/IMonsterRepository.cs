@@ -13,6 +13,6 @@ namespace Naima.MostriVsEroi.Core.Repositories
         List<Monster> GetMonstersByHeroLevel(int level);
         int GetLife(int monsterId);
         Monster GetById(int monsterId);
-        Monster UpdateLifePoints(int lifePoints, int id);
+        Monster Update(Monster monster);
     }
 }

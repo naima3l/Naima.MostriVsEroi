@@ -99,17 +99,16 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 {
                     case 1:
                         heroId = ChooseHero(user.Id);
-                        continuare =Play(user.Id, heroId);
+                        continuare = Play(user.Id, heroId);
                         break;
                     case 2:
                         heroId = CreateHero(user.Id);
-                        Play(user.Id, heroId);
+                        continuare = Play(user.Id, heroId);
                         break;
                     case 3:
                         DeleteHero(user.Id);
                         break;
                     case 0:
-                        Menu();
                         continuare = false;
                         break;
                 }
@@ -128,15 +127,16 @@ namespace Naima.MostriVsEroi.ConsoleApp
             Monster monster = bl.getMonsterById(monsterId);
 
             Console.WriteLine("Iniziamo!");
-            HeroChoice(id, hero, monster);
+            return HeroChoice(id, hero, monster);
 
             //giocare di nuovo
-            return PlayAgain(id, hero, monster);
+            //return PlayAgain(id, hero, monster);
         }
 
-        private static void HeroChoice(int id, Hero hero, Monster monster)
+        private static bool HeroChoice(int id, Hero hero, Monster monster)
         {
             int choice;
+            bool continuare = true;
             do
             {
                 Console.WriteLine("Tocca a te eroe");
@@ -154,7 +154,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
                         int c = RunAway(id, hero, monster);
                         if (c > 0)
                         {
-                            break;
+                            return false;
                         }
                         break;
                 }
@@ -163,6 +163,9 @@ namespace Naima.MostriVsEroi.ConsoleApp
             if (hero.LifePoints > 0)
             {
                 hero.AccumulatedPoints += (monster.Level * 10);
+                monster.LifePoints = bl.GetLifePointsByLevel(monster.Level);
+                hero.LifePoints = bl.GetLifePointsByLevel(hero.Level);
+
                 Console.WriteLine("Hai vinto!");
                 if (hero.AccumulatedPoints >= 30 && hero.AccumulatedPoints <= 59 && hero.Level <= 2)
                 {
@@ -186,17 +189,22 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 }
 
                 bl.UpdateHero(hero);
+                bl.UpdateMonster(monster);
             }
             else
             {
                 Console.WriteLine("Mi dispiace. Il mostro ha vinto! Sarà per la prossima");
+                hero.LifePoints = bl.GetLifePointsByLevel(hero.Level);
+                monster.LifePoints = bl.GetLifePointsByLevel(monster.Level);
+                bl.UpdateHero(hero);
+                bl.UpdateMonster(monster);
             }
 
 
+            //gioca di nuovo
+            return PlayAgain(id, hero, monster);
 
 
-           
-            
         }
 
         private static bool PlayAgain(int id, Hero hero, Monster monster)
@@ -268,8 +276,8 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         private static void HeroAttack(int id, Hero hero, Monster monster)
         {
-            int lifePoints = monster.LifePoints - hero.Weapon.DamagePoints;
-            monster = bl.UpdateMonsterLifePoints(lifePoints, (int)monster.Id);
+            monster.LifePoints -= hero.Weapon.DamagePoints;
+            monster = bl.UpdateMonster(monster);
 
             if (monster.LifePoints <= 0)
             {
@@ -432,7 +440,11 @@ namespace Naima.MostriVsEroi.ConsoleApp
             {
                 ShowMenuNotAdmin(user);
             }
-            ShowMenuAdmin(user);
+            else
+            {
+                ShowMenuAdmin(user);
+            }
+
         }
 
         private static void ShowMenuAdmin(User user)

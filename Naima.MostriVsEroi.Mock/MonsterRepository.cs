@@ -51,12 +51,11 @@ namespace Naima.MostriVsEroi.Mock
             return monsters.Where(m => m.Level <= level).ToList();
         }
 
-        public Monster UpdateLifePoints(int lifePoints, int id)
+        public Monster Update(Monster monster)
         {
-            var monster = GetById(id);
-            monsters.Remove(monster);
+            var m = monsters.Find(m => m.Id == monster.Id);
+            monsters.Remove(m);
 
-            monster.LifePoints = lifePoints;
             monsters.Add(monster);
 
             return monster;
