@@ -135,7 +135,6 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         private static void HeroChoice(int id, Hero hero, Monster monster)
         {
-            User user = bl.GetUserById(id);
             int choice;
             do
             {
@@ -196,11 +195,21 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
 
             //giocare di nuovo
+            PlayAgain(id, hero, monster);
+            
+        }
+
+        private static void PlayAgain(int id, Hero hero, Monster monster)
+        {
+            int choice;
+
             Console.WriteLine("Vuoi giocare ancora? \nPremi 1 per giocare con un nuovo eroe \nPremi 2 per giocare con lo stesso eroe \nPremi 0 per non giocare più");
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > 2)
             {
                 Console.WriteLine("Scelta non valida! Riprova");
             }
+
+            User user = bl.GetUserById(id);
 
             switch (choice)
             {
