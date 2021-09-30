@@ -127,15 +127,15 @@ namespace Naima.MostriVsEroi.ConsoleApp
             Monster monster = bl.getMonsterById(monsterId);
 
             Console.WriteLine("Iniziamo!");
-            return HeroChoice(id, hero, monster);
+            HeroChoice(id, hero, monster);
 
             //giocare di nuovo
-            //return PlayAgain(id, hero, monster);
+            return PlayAgain(id, hero, monster);
         }
 
-        private static bool HeroChoice(int id, Hero hero, Monster monster)
+        private static void HeroChoice(int id, Hero hero, Monster monster)
         {
-            int choice;
+            int choice, c = 0;
             bool continuare = true;
             do
             {
@@ -151,16 +151,23 @@ namespace Naima.MostriVsEroi.ConsoleApp
                         HeroAttack(id, hero, monster);
                         break;
                     case 2:
-                        int c = RunAway(id, hero, monster);
-                        if (c > 0)
-                        {
-                            return false;
-                        }
+                        c = RunAway(id, hero, monster);
                         break;
                 }
-            } while (hero.LifePoints > 0 && monster.LifePoints > 0);
+            } while ((hero.LifePoints > 0 && monster.LifePoints > 0) || c == 0);
 
-            if (hero.LifePoints > 0)
+            if(c > 0)
+            {
+                Console.WriteLine("Sei riuscito nella fuga!");
+                hero.AccumulatedPoints -= (monster.Level * 5);
+                if (hero.AccumulatedPoints < 0)
+                {
+                    hero.AccumulatedPoints = 0;
+                }
+                bl.UpdateHero(hero);
+                return;
+            }
+            else if (hero.LifePoints > 0)
             {
                 hero.AccumulatedPoints += (monster.Level * 10);
                 monster.LifePoints = bl.GetLifePointsByLevel(monster.Level);
@@ -198,11 +205,12 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 monster.LifePoints = bl.GetLifePointsByLevel(monster.Level);
                 bl.UpdateHero(hero);
                 bl.UpdateMonster(monster);
+
+
             }
 
 
             //gioca di nuovo
-            return PlayAgain(id, hero, monster);
 
 
         }
@@ -259,17 +267,15 @@ namespace Naima.MostriVsEroi.ConsoleApp
         private static int RunAway(int id, Hero hero, Monster monster)
         {
             Random random = new Random();
-            bool choice = Convert.ToBoolean(random.Next(2));
+            int choice = random.Next(0,1);
 
-            if (choice == false)
+            if (choice == 0) //false
             {
-                MonsterAttack(id, hero, monster);
+                //MonsterAttack(id, hero, monster);
                 return 0;
             }
             else
             {
-                hero.LifePoints -= (monster.Level * 5);
-                bl.UpdateHero(hero);
                 return hero.LifePoints;
             }
         }
