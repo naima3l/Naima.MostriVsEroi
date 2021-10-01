@@ -1,4 +1,5 @@
-﻿using Naima.MostriVsEroi.Core.BL;
+﻿using Naima.MostriVsEroi.Ado;
+using Naima.MostriVsEroi.Core.BL;
 using Naima.MostriVsEroi.Core.Entities;
 using Naima.MostriVsEroi.Mock;
 using System;
@@ -9,6 +10,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
     class Program
     {
         private static readonly IBusinessLayer bl = new BusinessLayer(new HeroRepository(), new MonsterRepository(), new UserRepository(), new CategoryRepository(), new WeaponRepository());
+        //private static readonly IBusinessLayer bl = new BusinessLayer(new HeroRepositoryADO(), new MonsterRepositoryADO(), new UserRepositoryADO(), new CategoryRepositoryADO(), new WeaponRepositoryADO());
         static void Main(string[] args)
         {
             Menu();
@@ -406,7 +408,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             Console.WriteLine("Inserisci la tua password");
             password = Console.ReadLine();
-            while (string.IsNullOrEmpty(nickname))// || nickname.Length < 6) //ho stabilito che la lunghezza della password fosse 6
+            while (string.IsNullOrEmpty(nickname))
             {
                 Console.WriteLine("Inserisci una password valida (max 6)");
             }
@@ -420,8 +422,6 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             User user = bl.GetUserByNickname(nickname);
 
-            //TO DO
-            //Quando un utente possiede almeno un eroe di livello 3, diventa admin.
             int levelHeros = bl.GetHeroesLevel3ByPlayer(user.Id);
             if (levelHeros > 0)
             {

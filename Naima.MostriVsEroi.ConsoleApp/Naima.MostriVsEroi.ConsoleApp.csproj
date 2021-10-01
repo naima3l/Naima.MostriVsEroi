@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Naima.MostriVsEroi.Ado\Naima.MostriVsEroi.Ado.csproj" />
     <ProjectReference Include="..\Naima.MostriVsEroi.Core\Naima.MostriVsEroi.Core.csproj" />
     <ProjectReference Include="..\Naima.MostriVsEroi.Mock\Naima.MostriVsEroi.Mock.csproj" />
   </ItemGroup>

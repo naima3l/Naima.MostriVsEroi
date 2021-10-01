@@ -20,5 +20,9 @@ namespace Naima.MostriVsEroi.Core.Entities
             IdCategory = idCat;
             DamagePoints = dPoints;
         }
+
+        public Weapon()
+        {
+        }
     }
 }

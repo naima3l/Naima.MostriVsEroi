@@ -10,9 +10,9 @@ namespace Naima.MostriVsEroi.Core.Entities
     {
         public int idCategory { get; set; }
         public string Name { get; set; }
-        public int Discriminator { get; set; } //0 => Hero, 1 => Monster
+        public int Discriminator { get; set; } //1 => Hero, 2 => Monster
 
-        
+        public Category() { }
         public Category(int id, string name, int discriminator)
         {
             idCategory = id;

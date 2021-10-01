@@ -15,7 +15,7 @@ namespace Naima.MostriVsEroi.Mock
             //-------------EROI------------------------
             new Weapon(1,"Alabarda",1,15), //GUERRIERO
             new Weapon(2,"Ascia",1,8),
-            new Weapon(3,"Mazza",5,15),
+            new Weapon(3,"Mazza",1,5),
             new Weapon(4,"Spada",1,10),
             new Weapon(5,"Spadone",1,15),
             //--------------------------
