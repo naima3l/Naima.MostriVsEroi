@@ -12,7 +12,7 @@ namespace Naima.MostriVsEroi.Core.BL
         bool CheckCredentials(string nickname, string password);
         string InserNewUser(string nickname, string password);
         bool CheckDiscriminator(string nickname);
-        List<Hero> ShowHeroes();
+        List<Hero> ShowHeroesByIdPlayer(int id);
         User GetUserByNickname(string nickname);
         void UpdateHeroIdUser(int idHero, int id);
         List<Category> ShowCategoriesByDiscriminator(int v);
@@ -39,5 +39,6 @@ namespace Naima.MostriVsEroi.Core.BL
         User UpdateUser(User user);
         int GetLifePointsByLevel(int level);
         int[] GetLevelByAccumulatedPoints(int accumulatedPoints, int level);
+        List<Hero> ShowHeroes();
     }
 }

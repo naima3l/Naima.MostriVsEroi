@@ -143,5 +143,10 @@ namespace Naima.MostriVsEroi.Mock
             var h = heroes.Where(u => u.IdPlayer == id && u.Level == 3);
             return h.Count();
         }
+
+        public List<Hero> GetAllByIdPlayer(int id)
+        {
+            return heroes.Where(h => h.IdPlayer == id).ToList();
+        }
     }
 }

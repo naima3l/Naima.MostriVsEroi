@@ -22,5 +22,6 @@ namespace Naima.MostriVsEroi.Core.Repositories
         void UpdateHero(Hero hero);
         List<Hero> GetByPlayer(int id);
         int GetHeroesLevel3ByPlayer(int id);
+        List<Hero> GetAllByIdPlayer(int id);
     }
 }

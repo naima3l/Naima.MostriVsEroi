@@ -44,8 +44,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 }
             } while (continuare);
             return;
-        }  //QUI => il problema è che quando finisco la partita, se premo 0 per non giocare più lui torna al suo menù corrispondente,
-           //ma se clicco di nuovo zero poi non ritorna al MenuIniziale ma torna alla fine della partita, e non esce mai praticamente
+        } 
 
         private static void Register()
         {
@@ -251,7 +250,15 @@ namespace Naima.MostriVsEroi.ConsoleApp
             }
             else
             {
-                hero.AccumulatedPoints -= (monster.Level * 5);
+                if((hero.AccumulatedPoints -(monster.Level * 5)) < 0)
+                {
+                    hero.AccumulatedPoints = 0;
+                }
+                else
+                {
+                    hero.AccumulatedPoints -= (monster.Level * 5);
+                }
+
                 bl.UpdateHero(hero);
                 return 1;
             }
@@ -364,7 +371,9 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
         private static int ChooseHero(int id)
         {
-            List<Hero> heroes = bl.ShowHeroes();
+            List<Hero> heroes = bl.ShowHeroesByIdPlayer(id);
+            List<Hero> allHeros = bl.ShowHeroes();
+
             if (heroes.Count > 0)
             {
                 foreach (var h in heroes)
@@ -375,7 +384,7 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
             Console.WriteLine("Scegli l'erore indicando il suo id");
             int idHero;
-            while (!int.TryParse(Console.ReadLine(), out idHero) || idHero < 0 || idHero > heroes.Count)
+            while (!int.TryParse(Console.ReadLine(), out idHero) || idHero < 0 || idHero > (allHeros.Count))
             {
                 Console.WriteLine("Id non valido! Riprova");
             }

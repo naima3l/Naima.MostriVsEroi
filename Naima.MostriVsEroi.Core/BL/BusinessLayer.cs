@@ -207,6 +207,11 @@ namespace Naima.MostriVsEroi.Core.BL
             return heroRepo.GetAll();
         }
 
+        public List<Hero> ShowHeroesByIdPlayer(int id)
+        {
+            return heroRepo.GetAllByIdPlayer(id);
+        }
+
         public List<Hero> ShowHeroesByPlayer(int id)
         {
             return heroRepo.GetByPlayer(id);
