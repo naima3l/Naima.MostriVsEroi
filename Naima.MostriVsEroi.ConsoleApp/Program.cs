@@ -129,6 +129,16 @@ namespace Naima.MostriVsEroi.ConsoleApp
             Console.WriteLine("Iniziamo!");
             HeroChoice(id, hero, monster);
 
+            //Aggiunto per problema //+
+            int[] res = bl.GetLevelByAccumulatedPoints(hero.AccumulatedPoints, hero.Level);
+            hero.AccumulatedPoints = res[0]; //+
+            hero.Level = res[1];
+            hero.LifePoints = bl.GetLifePointsByLevel(hero.Level);
+            monster.LifePoints = bl.GetLifePointsByLevel(monster.Level);
+
+            bl.UpdateHero(hero);
+            bl.UpdateMonster(monster); //+
+
             //giocare di nuovo
             return PlayAgain(id, hero, monster);
         }
@@ -166,49 +176,18 @@ namespace Naima.MostriVsEroi.ConsoleApp
                 monster.LifePoints = 0;
                 return;
             }
-            //else if (hero.LifePoints > 0)
-            //{
-            //    hero.AccumulatedPoints += (monster.Level * 10);
+            else if (hero.LifePoints > 0)
+            {
+                hero.AccumulatedPoints += (monster.Level * 10);
 
-            //    Console.WriteLine("Hai vinto!");
-
-            //    int[] res = bl.GetLevelByAccumulatedPoints(hero.AccumulatedPoints, hero.Level);
-            //    hero.AccumulatedPoints = res[0];
-            //    hero.Level = res[1];
-            //    hero.LifePoints = bl.GetLifePointsByLevel(hero.Level);
-            //    monster.LifePoints = bl.GetLifePointsByLevel(monster.Level);
-            //    bl.UpdateHero(hero);
-            //    bl.UpdateMonster(monster);
-            //}
-            //else
-            //{
-
-            //    Console.WriteLine("Mi dispiace. Il mostro ha vinto! Sarà per la prossima");
-            //}
+                Console.WriteLine("Hai vinto!");
+            }
             else
             {
-                if(hero.LifePoints > 0)
-                {
-                    hero.AccumulatedPoints += (monster.Level * 10);
 
-                    Console.WriteLine("Hai vinto!");
-                }
-                else
-                {
-                    Console.WriteLine("Mi dispiace. Il mostro ha vinto! Sarà per la prossima");
-                }
-
-                int[] res = bl.GetLevelByAccumulatedPoints(hero.AccumulatedPoints, hero.Level);
-                hero.AccumulatedPoints = res[0];
-                hero.Level = res[1];
-                hero.LifePoints = bl.GetLifePointsByLevel(hero.Level);
-                monster.LifePoints = bl.GetLifePointsByLevel(monster.Level);
-
-                bl.UpdateHero(hero);
-                bl.UpdateMonster(monster);
-                return;
+                Console.WriteLine("Mi dispiace. Il mostro ha vinto! Sarà per la prossima");
             }
- 
+            return;
         }
 
         private static bool PlayAgain(int id, Hero hero, Monster monster)
@@ -236,7 +215,6 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
                     HeroChoice(id, hero, monster);
                     return PlayAgain(id, hero, monster); //+
-                    break;
                 case 2:
                     List<Monster> monsters1 = bl.GetMonstersByHeroLevel(hero.Level);
                     Random random1 = new Random();
@@ -245,8 +223,6 @@ namespace Naima.MostriVsEroi.ConsoleApp
 
                     HeroChoice(id, hero, monster);
                     return PlayAgain(id, hero, monster); //+
-
-                    break;
                 case 0:
                     if (user.UserDiscriminator == 0)
                     {
