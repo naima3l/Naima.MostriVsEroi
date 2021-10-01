@@ -56,15 +56,15 @@ namespace Naima.MostriVsEroi.Mock
 
         public List<Hero> ShowBest10Heroes()
         {
-            var best = heroes.OrderByDescending(h => h.Level);//.ThenBy(h=> h.AccumulatedPoints);
-            var b = best.OrderByDescending(h => h.AccumulatedPoints);
+            var best = heroes.OrderByDescending(h => h.Level).ThenByDescending(h => h.AccumulatedPoints);
+            //var b = best.OrderByDescending(h => h.AccumulatedPoints);
             
-            if(b.Count() == 0)
+            if(best.Count() == 0)
             {
                 return null;
             }
             List<Hero> h = new List<Hero>();
-            foreach(var bt in b)
+            foreach(var bt in best)
             {
                 h.Add(bt);
             }
