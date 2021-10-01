@@ -75,6 +75,39 @@ namespace Naima.MostriVsEroi.Core.BL
             return heroRepo.GetLife(heroId);
         }
 
+        public int[] GetLevelByAccumulatedPoints(int accumulatedPoints, int level)
+        {
+            int[] s = new int[2];
+
+            if (accumulatedPoints >= 30 && accumulatedPoints <= 59 && level <= 2)
+            {
+                s[0] = 0;
+                s[1] = 2;
+            }
+            else if (accumulatedPoints >= 60 && accumulatedPoints <= 89 && level <= 3)
+            {
+                s[0] = 0;
+                s[1] = 3;
+            }
+            else if (accumulatedPoints >= 90 && accumulatedPoints <= 119 && level <= 4)
+            {
+                s[0] = 0;
+                s[1] = 4;
+            }
+            else if (accumulatedPoints >= 120 && level <= 5)
+            {
+                s[0] = 0;
+                s[1] = 5;
+            }
+            else
+            {
+                s[0] = accumulatedPoints;
+                s[1] = level;
+            }
+
+            return s;
+        }
+
         public int GetLifePointsByLevel(int level)
         {
             if(level == 1)

@@ -38,5 +38,6 @@ namespace Naima.MostriVsEroi.Core.BL
         int GetHeroesLevel3ByPlayer(int id);
         User UpdateUser(User user);
         int GetLifePointsByLevel(int level);
+        int[] GetLevelByAccumulatedPoints(int accumulatedPoints, int level);
     }
 }

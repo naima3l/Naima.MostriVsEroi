@@ -22,7 +22,7 @@ namespace Naima.MostriVsEroi.Mock
             new Hero(8, "Celestial Dagger", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
             new Hero(9, "Grim Lizardwoman", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
             new Hero(10, "The Peculiar Fire Giant", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3), //
-            new Hero(11, "The Invisible Sharpshooter", 5,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3) //
+            new Hero(11, "The Invisible Sharpshooter", 1,100, new Category(1,"Guerriero", 0), new Weapon(2,"Ascia", 1, 8),0, 3) //
         };
 
         public Hero AddNewHero(string name, Category category, Weapon weapon, int id)
